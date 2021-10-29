@@ -3,6 +3,6 @@
         Copyright &copy; 2021
     </div>
     <div class="footer-right">
-        Otak Kanan
+        KJS
     </div>
 </footer>

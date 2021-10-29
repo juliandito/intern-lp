@@ -19,7 +19,7 @@
                                 <h4>Published Articles</h4>
                             </div>
                             <div class="card-body">
-                                <h3>{{ $published_articles->count() }}</h3>
+                                <h3></h3>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                                 <h4>Drafted Articles</h4>
                             </div>
                             <div class="card-body">
-                                <h3>{{ $drafted_articles->count() }}</h3>
+                                <h3></h3>
                             </div>
                         </div>
                     </div>
@@ -55,14 +55,14 @@
                                 <h4>Users</h4>
                             </div>
                             <div class="card-body">
-                                <h3>{{ $users->count() }}</h3>
+                                <h3></h3>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="row w-100">
@@ -70,7 +70,7 @@
                                     <h6>Recent Articles</h6>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a href="{{ route('admin.articles.all') }}" class="text-decoration-none">
+                                    <a href="" class="text-decoration-none">
                                         <button id="preview-button" type="button" class="btn btn-block btn-sm btn-info">
                                             <strong>DETAIL</strong>
                                         </button>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="card-body" id="top-5-scroll">
                             <ul class="list-unstyled list-unstyled-border">
-                                @forelse ($articles as $article)
+                                {{-- @forelse ($articles as $article)
                                     <li class="media">
                                         <img class="mr-3 rounded" width="100" src="{{ $article->header_image }}" alt="header-image">
                                         <div class="media-body">
@@ -104,49 +104,11 @@
                                     </li>
                                 @empty
                                     <h3>Belum ada artikel</h3>
-                                @endforelse
+                                @endforelse --}}
                             </ul>
                         </div>
                         <div class="card-footer">
-                            {{ $articles->links('pagination::bootstrap-4') }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header pb-0">
-                            <div class="row w-100">
-                                <div class="col-md-9">
-                                    <h6>Article Categories</h6>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="{{ route('admin.article-categories.all') }}" class="text-decoration-none">
-                                        <button id="preview-button" type="button" class="btn btn-sm btn-info">
-                                            <strong>DETAIL</strong>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body pt-0">
-                            <table id="article-categories-id" class="table table-sm">
-                                <thead hidden>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($article_categories as $article_category)
-                                    <tr>
-                                        <td>
-                                            {{ $article_category->name }} <small>({{ $article_category->article->count() }})</small>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                        <h3>Belum ada kategori artikel</h3>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                            {{-- {{ $articles->links('pagination::bootstrap-4') }} --}}
                         </div>
                     </div>
                 </div>

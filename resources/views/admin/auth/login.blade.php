@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 
 @section('content')
 <div class="container">
@@ -22,6 +22,19 @@
                     </div>
                     <form method="POST" action="{{ route('admin.auth.login') }}">
                         @csrf
+
+                    <div class="row mt-3">
+                        <div class="col text-left">
+                            <div class="alert alert-primary">
+                                <h6>
+                                    Email: webadmin@gmail.com
+                                </h6>
+                                <h6>
+                                    Password: webadmin12345678
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mt-5">
                         <div class="col">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
@@ -50,7 +63,7 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col">
-                            <button type="submit" class="btn btn-block shadow border-0 login-button">
+                            <button type="submit" class="btn btn-block shadow border-0 btn-primary">
                                 <b>{{ __('LOGIN') }}</b>
                             </button>
                         </div>
