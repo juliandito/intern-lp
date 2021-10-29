@@ -21,9 +21,10 @@ Run artisan serve
 
 Admin login url
 > http://127.0.0.1:8000/admin/auth
+
 User login url
 > http://127.0.0.1:8000/login
 
 
 ## NB
-Because I run out of time, not all features is added and developed perfectly. Hopefully it can run well in your device.
+Because I run out of time, not all features is added and developed perfectly. Hopefully it still can run well in your device.
