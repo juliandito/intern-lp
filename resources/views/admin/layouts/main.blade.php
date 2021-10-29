@@ -90,9 +90,6 @@
     <script src="{{ asset('lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/customsweetalert2.js') }}"></script>
 
-    <!-- Custom Script -->
-    <script src="{{ asset('js/ajax.js') }}"></script>
-
     @yield('script')
 
     </body>

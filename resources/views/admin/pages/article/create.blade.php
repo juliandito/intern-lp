@@ -78,33 +78,6 @@
                                     </div>
 
                                     <div class="row form-group mb-4">
-                                        <label class="col-md-1 col-form-label text-md-right">Article Category</label>
-                                        <div class="col-md-9">
-                                            <div id="article-category-selection">
-                                                <select class="form-control" name="category" id="category">
-                                                    <option value="" selected>Pilih kategori artikel--</option>
-                                                    @forelse ($article_categories as $article_category)
-                                                        <option class="form-control" value="{{ $article_category->id }}">
-                                                            {{ $article_category->name }}
-                                                        </option>
-                                                    @empty
-                                                        <option class="form-control" value="" selected>No available categories</option>
-                                                    @endforelse
-
-                                                </select>
-                                                @error('category')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#addCategoryModal">
-                                                <i class="fas fa-plus"></i> New Category
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-group mb-4">
                                         <label class="col-md-1 col-form-label text-md-right">Thumbnail Image</label>
                                         <div class="col-md-9">
                                             <input type="file" name="header_image" id="header_image" class="form-control" autocomplete="off">
@@ -253,62 +226,6 @@
                 $('input#save_as').val('published');
 
                 $('form#article-form').submit();
-            });
-
-            const slugValidationUrl = "{{ route('admin.api.articles.validate-slug') }}";
-            $('#slug').keyup(function(event) {
-                var slug = $(this).val();
-
-                $.post(slugValidationUrl, {
-                        _method: 'POST',
-                        _token: '{{ csrf_token() }}',
-                        slug: slug,
-                        article_id: '',
-                    },
-                    function (data) {
-                        if (data.success) {
-                            $('#slug-status').attr('class', '');
-                            $('#slug-status').attr('class', 'text-success');
-                            $('#slug-status').text('');
-                            $('#slug-status').text('Slug is available');
-                        } else {
-                            $('#slug-status').attr('class', '');
-                            $('#slug-status').attr('class', 'text-danger');
-                            $('#slug-status').text('');
-                            $('#slug-status').text('Slug is unavailable, please use another slug');
-                        }
-                        return false;
-                    }
-                );
-            });
-
-            $('#add-category-form').on('submit', function(event) {
-                event.preventDefault();
-
-                const formData = createFormData('add-category-form');
-                const storeUrl = "{{ route('admin.api.article-categories.store') }}";
-
-                $.post(storeUrl, {
-                        _method: 'POST',
-                        _token: '{{ csrf_token() }}',
-                        admin_id: '{{ Auth::user()->id }}',
-                        name: $('input#name').val(),
-                        description: $('textarea#description').val(),
-                    },
-                    function (data) {
-                        if (data.success) {
-                            CustomSuccessSwal('Sukses', 'Berhasil ditambahkan ke daftar kategori!');
-
-                            // refresh article category selections
-                            $("#article-category-selection").load(" #article-category-selection");
-                        } else {
-                            CustomErrorSwal('Gagal', 'Mohon periksa isian');
-                        }
-                        $('#addCategoryModal').modal('hide');
-                        $('#add-category-form')[0].reset();
-                        return false;
-                    }
-                );
             });
 
             $("input[type='file']").on("change", function() {

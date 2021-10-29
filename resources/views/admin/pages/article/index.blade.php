@@ -56,10 +56,11 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Title</th>
-                                                <th>Category</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
                                                 <th>Created By</th>
+                                                <th>Like Count</th>
+                                                <th>Comments Count</th>
                                                 <th>
                                                     <i class="fas fa-cog"></i>
                                                 </th>
@@ -70,7 +71,6 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $article->title }}</td>
-                                                    <td>{{ $article->category->name }}</td>
                                                     <td>
                                                         @if ($article->status == 'published')
                                                             <span class="badge badge-success shadow-sm font-weight-bold">{{ $article->status }}</span>
@@ -86,24 +86,16 @@
                                                         @endphp
                                                     </td>
                                                     <td>{{ $article->author->name }}</td>
+                                                    <td>{{ $article->like->count() }}</td>
+                                                    <td>{{ $article->comment->count() }}</td>
                                                     <td>
-                                                        {{-- <a href="" class="text-decoration-none">
-                                                            <button class="btn btn-sm btn-info">
-                                                                <i class="fas fa-eye"></i> <b>VIEW</b>
-                                                            </button>
-                                                        </a> --}}
-
-                                                        <button class="btn btn-sm btn-primary" onclick="quickEdit({{$article->id}})">
-                                                            <i class="fas fa-bolt"></i> <b>QUICK EDIT</b>
-                                                        </button>
-
                                                         <a href="{{ route('admin.articles.edit', ['id'=>$article->id]) }}" class="text-decoration-none">
                                                             <button class="btn btn-sm btn-warning" >
                                                                 <i class="fas fa-edit"></i> <b>EDIT</b>
                                                             </button>
                                                         </a>
 
-                                                        <a class="delete-button" href="{{ route('admin.articles.delete', ['article' => $article->id]) }}" class="text-decoration-none">
+                                                        <a class="delete-button" href="{{ route('admin.articles.delete', ['id' => $article->id]) }}" class="text-decoration-none">
                                                             <button class="btn btn-sm btn-danger">
                                                                 <i class="fas fa-trash"></i> <b>DELETE</b>
                                                             </button>
@@ -124,53 +116,6 @@
 @endsection
 
 @section('modal')
-    <div class="modal fade text-left" id="quickEditModal" tabindex="-1" role="dialog" aria-labelledby="quickEditModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="quickEditModalLabel">Quick Edit</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="quick-edit-form" action="" method="POST" data-article-id="">
-                    @csrf
-                    <div class="modal-body">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Title:</label>
-                                <input type="text" class="form-control" id="title" name="title">
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Slug:</label>
-                                <input type="text" class="form-control" id="slug" name="slug">
-                                <small id="slug-status"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Status:</label>
-                                <div class="selectgroup w-100">
-                                    <label class="selectgroup-item">
-                                        <input class="selectgroup-input" type="radio" name="save_as" id="draft" value="draft">
-                                        <span class="selectgroup-button"><strong>DRAFT</strong></span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input class="selectgroup-input" type="radio" name="save_as" id="published" value="published" >
-                                        <span class="selectgroup-button"><strong>PUBLISHED</strong></span>
-                                    </label>
-                                </div>
-                            </div>
-                    </div>
-                    <div class="modal-footer text-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            <i class="fas fa-times"></i> Close
-                        </button>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Save
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('script')
@@ -181,7 +126,7 @@
                 lengthChange: true,
                 autoWidth: false,
                 dom: 'frtip',
-                order: [[ 4, "desc" ]],
+                order: [[ 3, "desc" ]],
             });
 
             var sessionSuccessAlert = "{{ Session::has('success') }}";
@@ -211,60 +156,7 @@
                 }
             });
         });
-
-		function quickEdit(id) {
-            // clean input that might be saved as state
-            $('#quick-edit-form')[0].reset();
-            $('#quick-edit-form').attr('action', '');
-            $('#quick-edit-form').attr('data-article-id', '');
-
-            $.ajax({
-                type: "GET",
-                url: "{{ url('/admin-news-portal/api/articles/quick-edit/') }}"+ "/" + id,
-                dataType: "JSON",
-                success: function ( result ) {
-                    $('#quick-edit-form input#title').val(result.data.article.title);
-                    $('#quick-edit-form input#slug').val(result.data.article.slug);
-                    $('#quick-edit-form').attr('action', result.data.quick_edit_update_url);
-                    $('#quick-edit-form').attr('data-article-id', result.data.article.id);
-
-                    if (result.data.article.status === "draft") {
-                        $('#quick-edit-form input#draft').attr('checked', 'checked');
-                    } else {
-                        $('#quick-edit-form input#published').attr('checked', 'checked');
-                    }
-
-                    $('#quickEditModal').modal('show');
-                },
-                error: function(xhr, options, err){}
-            });
-        }
-
-        const slugValidationUrl = "{{ route('admin.api.articles.validate-slug') }}";
-        $('#quick-edit-form input#slug').keyup(function(event) {
-            var slug = $(this).val();
-            var article_id = $('#quick-edit-form').attr('data-article-id');
-
-            $.post(slugValidationUrl, {
-                _method: 'POST',
-                _token: '{{ csrf_token() }}',
-                slug: slug,
-                article_id: article_id,
-            },
-            function (data) {
-                if (data.success) {
-                    $('#slug-status').attr('class', '');
-                    $('#slug-status').attr('class', 'text-success');
-                    $('#slug-status').text('');
-                    $('#slug-status').text('Slug is available');
-                } else {
-                    $('#slug-status').attr('class', '');
-                    $('#slug-status').attr('class', 'text-danger');
-                    $('#slug-status').text('');
-                    $('#slug-status').text('Slug is unavailable, please use another slug');
-                }
-                return false;
-            });
-        });
     </script>
+
+
 @endsection

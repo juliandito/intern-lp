@@ -91,38 +91,6 @@
                                     </div>
 
                                     <div class="row form-group mb-4">
-                                        <label class="col-md-1 col-form-label text-md-right">Article Category</label>
-                                        <div class="col-md-9">
-                                            <div id="article-category-selection">
-                                                <select class="form-control" name="category" id="category">
-                                                    @forelse ($article_categories as $article_category)
-                                                        @if ($article->category_id == $article_category->id)
-                                                            <option class="form-control" value="{{ $article_category->id }}" selected>
-                                                                {{ $article_category->name }}
-                                                            </option>
-                                                        @else
-                                                            <option class="form-control" value="{{ $article_category->id }}">
-                                                                {{ $article_category->name }}
-                                                            </option>
-                                                        @endif
-                                                    @empty
-                                                        <option class="form-control" value="" selected>No available categories</option>
-                                                    @endforelse
-
-                                                </select>
-                                                @error('category')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#addCategoryModal">
-                                                <i class="fas fa-plus"></i> New Category
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-group mb-4">
                                         <label class="col-md-1 col-form-label text-md-right">Thumbnail Image</label>
                                         <div class="col-md-9">
                                             <input type="file" name="header_image" id="header_image" class="form-control" autocomplete="off">
@@ -199,44 +167,6 @@
 @endsection
 
 @section('modal')
-    <div class="modal fade text-left" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Article Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="add-category-form" action="" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Description:</label>
-                            <textarea class="form-control" id="description" name="description" cols="30" rows="6"></textarea>
-                        </div>
-                </div>
-                <div class="modal-footer text-right">
-                    <div class="p-2">
-                        <div class="row">
-                            <div class="col pr-0">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade text-left" id="viewHeaderImageModal" tabindex="-1" role="dialog" aria-labelledby="viewHeaderImageModal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -247,7 +177,7 @@
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <img class="header-preview" src="{{ $article->header_image }}" alt="current header image" style="max-width: 750px">
+                    <img class="header-preview" src="{{ $article->thumbnail_image }}" alt="current header image" style="max-width: 750px">
                 </div>
             </div>
         </div>
@@ -270,7 +200,7 @@
                     </div>
                     <div class="row mt-4 text-center">
                         <div class="col">
-                            <img class="header-preview" src="{{ $article->header_image }}" alt="current header image" style="max-width: 750px">
+                            <img class="header-preview" src="{{ $article->thumbnail_image }}" alt="current header image" style="max-width: 750px">
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -288,61 +218,6 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            const slugValidationUrl = "{{ route('admin.api.articles.validate-slug') }}";
-            $('#slug').keyup(function(event) {
-                var slug = $(this).val();
-
-                $.post(slugValidationUrl, {
-                        _method: 'POST',
-                        _token: '{{ csrf_token() }}',
-                        slug: slug,
-                        article_id: '',
-                    },
-                    function (data) {
-                        if (data.success) {
-                            $('#slug-status').attr('class', '');
-                            $('#slug-status').attr('class', 'text-success');
-                            $('#slug-status').text('');
-                            $('#slug-status').text('Slug is available');
-                        } else {
-                            $('#slug-status').attr('class', '');
-                            $('#slug-status').attr('class', 'text-danger');
-                            $('#slug-status').text('');
-                            $('#slug-status').text('Slug is unavailable, please use another slug');
-                        }
-                        return false;
-                    }
-                );
-            });
-
-            $('#add-category-form').on('submit', function(event) {
-                event.preventDefault();
-
-                const formData = createFormData('add-category-form');
-                const storeUrl = "{{ route('admin.api.article-categories.store') }}";
-
-                $.post(storeUrl, {
-                        _method: 'POST',
-                        _token: '{{ csrf_token() }}',
-                        admin_id: '{{ Auth::user()->id }}',
-                        name: $('input#name').val(),
-                        description: $('textarea#description').val(),
-                    },
-                    function (data) {
-                        if (data.success) {
-                            CustomSuccessSwal('Sukses', 'Berhasil ditambahkan ke daftar kategori!');
-
-                            // refresh article category selections
-                            $("#article-category-selection").load(" #article-category-selection");
-                        } else {
-                            CustomErrorSwal('Gagal', 'Mohon periksa isian');
-                        }
-                        $('#addCategoryModal').modal('hide');
-                        $('#add-category-form')[0].reset();
-                        return false;
-                    }
-                );
-            });
 
             $("input[type='file']").on("change", function() {
                 if (this.files[0].size > 5000000) {
@@ -411,7 +286,6 @@
 
                 $('#articlePreviewModal').modal('show');
             });
-
         });
     </script>
 @endsection

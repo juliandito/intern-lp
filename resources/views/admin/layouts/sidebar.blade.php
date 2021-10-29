@@ -18,8 +18,7 @@
                 <li class="nav-item dropdown {{ $nav_tree=='articles'?'active':'' }}">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-columns"></i><span>Articles</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="">All Articles</a></li>
-                        <li><a class="nav-link" href="">Trashed Articles</a></li>
+                        <li><a class="nav-link" href="{{ route('admin.articles.all') }}">All Articles</a></li>
                     </ul>
                 </li>
             </ul>
