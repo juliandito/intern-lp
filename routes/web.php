@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\{
+    ArticleController,
+};
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,10 +18,20 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/',[
+    ArticleController::class, 'index'
+])->name('articles.all');
+
+Route::group(['prefix'=>'articles'], function () {
+    Route::get('/{slug}',[
+        ArticleController::class, 'show'
+    ])->name('articles.detail');
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/{slug}/like',[
+            ArticleController::class, 'store_like'
+        ])->name('articles.like.store');
+    });
+});

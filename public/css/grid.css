@@ -1,0 +1,109 @@
+/*
+NAVVVV
+*/
+/* .logo{
+    width: 13%;
+    height: auto;
+}
+a:hover{
+
+    color:#95BFA7;
+}
+li{
+    font-size: 24px;
+    padding: 10px;
+}
+
+
+.text-head{
+    margin-top: 10px;
+    font-size: 32px;
+    color: #F2CDAC;
+}
+.container{
+    width: 90%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.jumbotron{
+    margin-top: 200px;
+    background-color: transparent;
+}
+h1{
+    color: #95BFA7;
+}
+p{
+    color: gray;
+}
+.jumbo{
+    margin-left: 15px;
+}
+.shop{
+    background-color: #95BFA7;
+    color: white;
+    border-radius: 20px;
+} */
+
+
+
+/*
+GRIDDDD
+*/
+.grid-wrapper{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    column-gap: 20px;
+    row-gap: 15px;
+}
+
+.grid-wrapper-bundling{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.box{
+    margin: 10px;
+}
+
+
+.mainitems{
+    width: 90%;
+    margin: auto;
+}
+.items{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.foto-items{
+    width: 100%;
+    height: auto;
+}
+
+.foto-cat{
+    width: 100%;
+}
+
+.frame-kategori{
+    width: 100px;
+}
+
+/* .pilih:hover {
+    transform: scale(1.05);
+} */
+
+.container-items{
+    width: 80%;
+}
+
+.showcase{
+    border: 1px;
+}
+.nama-kat{
+    color: #95BFA7;
+}
+.invisbutt{
+    border: 0px;
+    background-color: transparent;
+}

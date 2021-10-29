@@ -8,7 +8,6 @@ use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Models\ArticleLike;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
