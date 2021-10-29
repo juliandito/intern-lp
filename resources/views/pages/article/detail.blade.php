@@ -18,24 +18,9 @@
 
             <div class="mt-2">
                 Like: {{ $article->like->count() }}
-
-                <br>
-                @if (Auth::user())
-                    <?php  $user_liked = false ?>
-                    @forelse ($article->like as $like)
-                        @if ($like->user_id == Auth::user()->id)
-                            <?php  $user_liked = true ?>
-                        @endif
-                    @empty
-                        <a href="{{ route('articles.like.store', ['slug' => $article->slug]) }}">
-                            <button class="btn btn-primary btn-sm">Like</button>
-                        </a>
-                    @endforelse
-                @else
-                    <a href="{{ route('articles.like.store', ['slug' => $article->slug]) }}">
-                        <button class="btn btn-primary btn-sm">Like</button>
-                    </a>
-                @endif
+                <a href="{{ route('articles.like.store', ['slug' => $article->slug]) }}">
+                    <button class="btn btn-primary btn-sm">Like</button>
+                </a>
             </div>
 
             <div class="mt-5 mb-5">
